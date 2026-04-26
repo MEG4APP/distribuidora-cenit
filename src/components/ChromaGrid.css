@@ -1,0 +1,263 @@
+/* ================================================================
+   ChromaGrid.css — Shoe Catalog with Chroma Spotlight Effect
+   ================================================================ */
+
+.chroma-grid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), 300px);
+  grid-auto-rows: auto;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  box-sizing: border-box;
+  --x: 50%;
+  --y: 50%;
+  --r: 260px;
+}
+
+@media (max-width: 1024px) {
+  .chroma-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 300px));
+    gap: 0.75rem;
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .chroma-grid {
+    grid-template-columns: minmax(280px, 320px);
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+}
+
+/* ── Card ── */
+.chroma-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: auto;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #2a2a2a;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+  background: var(--card-gradient, linear-gradient(145deg, #1e3a8a, #050505));
+  cursor: pointer;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --spotlight-color: rgba(255, 255, 255, 0.25);
+}
+
+.chroma-card:hover {
+  border-color: var(--card-border, #06b6d4);
+  transform: translateY(-4px);
+}
+
+/* Spotlight on hover */
+.chroma-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x) var(--mouse-y),
+    var(--spotlight-color),
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 2;
+}
+
+.chroma-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Image wrapper ── */
+.chroma-img-wrapper {
+  position: relative;
+  z-index: 1;
+  padding: 16px 16px 8px;
+  box-sizing: border-box;
+  background: transparent;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chroma-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.5));
+  transition: transform 0.4s ease;
+}
+
+.chroma-card:hover .chroma-img-wrapper img {
+  transform: scale(1.05);
+}
+
+/* ── Info footer ── */
+.chroma-info {
+  position: relative;
+  z-index: 1;
+  padding: 0.75rem 1rem 1rem;
+  color: #fff;
+  font-family: 'Inter', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.chroma-info .shoe-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.chroma-info .shoe-type {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--card-border, #06b6d4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.chroma-info .shoe-handle {
+  font-size: 0.75rem;
+  color: #888;
+  margin: 0;
+}
+
+.chroma-info .shoe-sizes {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.chroma-info .shoe-size-chip {
+  width: 26px;
+  height: 26px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #ccc;
+}
+
+.chroma-info .shoe-cta {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.chroma-card:hover .shoe-cta {
+  background: rgba(255,255,255,0.18);
+}
+
+/* ── Availability badge ── */
+.chroma-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 5;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chroma-badge.new     { background: #06b6d4; color: #fff; }
+.chroma-badge.avail   { background: rgba(34,197,94,0.2); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.chroma-badge.few     { background: rgba(251,191,36,0.2); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.chroma-badge.sold    { background: rgba(100,100,100,0.2); color: #888; border: 1px solid #444; }
+
+/* ── Chroma overlay (spotlight mask) ── */
+.chroma-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  backdrop-filter: grayscale(0.6) brightness(0.75);
+  -webkit-backdrop-filter: grayscale(0.6) brightness(0.75);
+  background: rgba(0, 0, 0, 0.001);
+  mask-image: radial-gradient(
+    circle var(--r) at var(--x) var(--y),
+    transparent 0%,
+    transparent 20%,
+    rgba(0,0,0,0.08) 35%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.35) 65%,
+    rgba(0,0,0,0.55) 80%,
+    black 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle var(--r) at var(--x) var(--y),
+    transparent 0%,
+    transparent 20%,
+    rgba(0,0,0,0.08) 35%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.35) 65%,
+    rgba(0,0,0,0.55) 80%,
+    black 100%
+  );
+}
+
+.chroma-fade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 11;
+  backdrop-filter: grayscale(0.6) brightness(0.75);
+  -webkit-backdrop-filter: grayscale(0.6) brightness(0.75);
+  background: rgba(0, 0, 0, 0.001);
+  mask-image: radial-gradient(
+    circle var(--r) at var(--x) var(--y),
+    white 0%,
+    white 20%,
+    rgba(255,255,255,0.88) 35%,
+    rgba(255,255,255,0.7) 50%,
+    rgba(255,255,255,0.5) 65%,
+    rgba(255,255,255,0.28) 80%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle var(--r) at var(--x) var(--y),
+    white 0%,
+    white 20%,
+    rgba(255,255,255,0.88) 35%,
+    rgba(255,255,255,0.7) 50%,
+    rgba(255,255,255,0.5) 65%,
+    rgba(255,255,255,0.28) 80%,
+    transparent 100%
+  );
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
