@@ -46,17 +46,7 @@ export default function LoadingScreen({ onComplete }) {
       delay: 0.4,
     });
 
-    // Logo crece suavemente 0.92 → 1.0
-    gsap.fromTo('.ls-logo',
-      { scale: 0.92 },
-      { scale: 1, duration: TOTAL, ease: 'sine.inOut' }
-    );
-
-    // Glow del logo aparece
-    gsap.fromTo('.ls-glow',
-      { opacity: 0, scale: 0.7 },
-      { opacity: 1, scale: 1, duration: 3, ease: 'power2.out' }
-    );
+    // Logo y Glow eliminados a petición del usuario (se integrarán en el video)
 
     // Overlay oscuro se desvanece — efecto "lights coming on"
     // Simple y confiable: anima opacity, GPU puro, no toca el video
@@ -83,7 +73,6 @@ export default function LoadingScreen({ onComplete }) {
         const exit = gsap.timeline({ onComplete });
         exit
           .to('.ls-bar-wrapper', { autoAlpha: 0, y: -10, duration: 0.3, ease: 'power2.in' })
-          .to('.ls-logo, .ls-glow', { autoAlpha: 0, scale: 1.03, duration: 0.45, ease: 'power3.in' }, '<0.05')
           .to('.ls-line', { scaleX: 0, autoAlpha: 0, duration: 0.3, ease: 'power2.in', transformOrigin: 'center center' }, '<0.05')
           .to(container.current, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, '-=0.15');
       },
@@ -143,32 +132,7 @@ export default function LoadingScreen({ onComplete }) {
         />
       </div>
 
-      {/* ── LOGO — centrado absolutamente ── */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative flex items-center justify-center">
-
-          <div
-            className="ls-glow absolute"
-            style={{
-              width: '100%', height: '100%', maxWidth: 400, maxHeight: 400,
-              borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(250,204,21,0.2) 0%, rgba(236,72,153,0.1) 40%, transparent 70%)',
-            }}
-          />
-
-          <img
-            src="/inicio/CENIT%20PNG.png"
-            alt="Distribuidora CENIT"
-            className="ls-logo relative z-10 h-16 sm:h-20 w-auto object-contain"
-            style={{
-              width: 'clamp(200px, 40vw, 580px)',
-              height: 'auto',
-              filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.8))',
-              willChange: 'transform',
-            }}
-          />
-        </div>
-      </div>
+      {/* Logo y Glow han sido removidos — el espacio queda libre para el video integrado */}
 
       {/* ── BARRA DE CARGA — anclada al fondo ── */}
       <div
