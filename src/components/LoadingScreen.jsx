@@ -98,10 +98,18 @@ export default function LoadingScreen({ onComplete }) {
       style={{ background: '#111' }}
     >
 
-      {/* ── FONDO PREMIUM CSS (Reemplaza al video de 40MB para velocidad) ── */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none" style={{
-        background: 'radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000000 100%)',
-      }} />
+      {/* ── VIDEO DE FONDO ── */}
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      >
+        <source src="/fondo-loading.mp4" type="video/mp4" />
+      </video>
 
       {/* Overlay oscuro único — arranca opaco y se desvanece en 2.5s */}
       {/* Efecto: video pasa de oscuro a su brillo real */}
