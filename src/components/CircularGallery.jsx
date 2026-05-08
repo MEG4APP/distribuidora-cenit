@@ -243,8 +243,8 @@ class Media {
         this.plane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height];
       }
     }
-    const isMobile = this.screen.width < 768;
-    this.scale = isMobile ? this.screen.width / 1100 : this.screen.height / 1500;
+    const isMobile = window.innerWidth < 768;
+    this.scale = isMobile ? 0.22 : this.screen.height / 1500;
     
     this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
     this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
@@ -325,7 +325,7 @@ class App {
   onTouchMove(e) {
     if (!this.isDown) return;
     const x = e.touches ? e.touches[0].clientX : e.clientX;
-    const multiplier = this.screen.width < 768 ? 0.05 : 0.025; // Sensibilidad duplicada en móvil
+    const multiplier = window.innerWidth < 768 ? 0.12 : 0.035; // Extrema sensibilidad en móvil
     const distance = (this.start - x) * (this.scrollSpeed * multiplier);
     this.scroll.target = this.scroll.position + distance;
   }

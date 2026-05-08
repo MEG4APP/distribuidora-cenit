@@ -165,7 +165,7 @@ export default function CatalogPage({ onOpenProduct }) {
                     {/* Image */}
                     <div className="relative h-64 overflow-hidden bg-gradient-to-br from-white/5 to-black">
                       <div className="absolute inset-0" style={{ background: `radial-gradient(circle at 50% 35%, ${accent}22, transparent 60%)` }} />
-                      <img src={product.images[0]} alt={product.name}
+                      <img src={product.images[0]} alt={product.name} loading="lazy"
                         className="h-full w-full object-contain p-4 transition duration-500 group-hover:scale-110 drop-shadow-xl" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                     </div>
