@@ -80,176 +80,94 @@ export default function HeroInicio({ onShopClick }) {
   return (
     <section
       ref={container}
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '100svh',
-        overflow: 'hidden',
-        background: '#0a0a0a',
-        color: '#fff',
-      }}
+      className="relative w-full h-[100svh] overflow-hidden bg-[#0a0a0a] text-white"
     >
 
       {/* ── VIDEO DE FONDO ── */}
       <video
         ref={videoRef}
         autoPlay muted loop playsInline preload="auto"
-        style={{
-          position: 'absolute', inset: 0,
-          width: '100%', height: '100%',
-          objectFit: 'cover', opacity: 1,
-          pointerEvents: 'none',
-        }}
+        className="absolute inset-0 w-full h-full object-cover opacity-100 pointer-events-none"
       >
         <source src="/Fondo%20INICIO.mp4" type="video/mp4" />
       </video>
 
-      {/* Overlay oscuro SOLO de izq a der — más ligero para que el video resalte */}
-      <div style={{
-        position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: 'linear-gradient(to right, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0.0) 100%)',
-      }} />
+      {/* Overlay oscuro: Gradiente en desktop, más opaco en mobile */}
+      <div className="absolute inset-0 pointer-events-none bg-black/50 md:bg-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/45 md:to-transparent" />
 
-      {/* ════ PANEL IZQUIERDO ════ */}
-      <div style={{
-        position: 'absolute',
-        top: 0, bottom: 64, left: 0,
-        width: '50%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        padding: '0 1rem 0 clamp(1.5rem, 4vw, 3.5rem)',
-        gap: '1.2rem',
-        overflow: 'hidden',
-      }}>
+      {/* ════ CONTENEDOR PRINCIPAL ════ */}
+      <div className="absolute inset-0 pb-16 pt-20 md:pt-0 flex flex-col md:flex-row z-10">
 
-        {/* Composición completa — imagen única animada */}
-        <img
-          src="/inicio/composicion%20completa.png"
-          alt="Marca tu estilo — Distribuidora CENIT"
-          className="hi-composicion"
-          style={{
-            width: '100%',
-            maxWidth: 520,
-            maxHeight: 'calc(100svh - 180px)',
-            objectFit: 'contain',
-            objectPosition: 'left center',
-            filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.7))',
-          }}
-        />
+        {/* ════ PANEL IZQUIERDO ════ */}
+        <div className="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-center items-center md:items-start px-6 md:pl-12 lg:pl-16 xl:pl-24 gap-4 md:gap-6">
+          
+          <img
+            src="/inicio/composicion%20completa.png"
+            alt="Marca tu estilo — Distribuidora CENIT"
+            className="hi-composicion w-full max-w-[280px] sm:max-w-[340px] md:max-w-[480px] lg:max-w-[520px] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]"
+            style={{ objectPosition: 'left center' }}
+          />
 
-        {/* Botón catálogo — alineado al ancho de la composición */}
-        <div style={{ width: '100%', maxWidth: 520, display: 'flex', justifyContent: 'flex-end' }}>
-          <motion.button
-            className="hi-cta-btn"
-            onClick={onShopClick}
-            whileHover={{ scale: 1.06, filter: 'brightness(1.12)' }}
-            whileTap={{ scale: 0.97 }}
-            style={{
-              opacity: 0,
-              background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-            }}
-            aria-label="Ver catálogo"
-          >
-            <img
-              src="/inicio/boton%20catalogo.png"
-              alt="Ver catálogo"
+          <div className="w-full max-w-[280px] sm:max-w-[340px] md:max-w-[480px] lg:max-w-[520px] flex justify-center md:justify-end">
+            <motion.button
+              className="hi-cta-btn"
+              onClick={onShopClick}
+              whileHover={{ scale: 1.06, filter: 'brightness(1.12)' }}
+              whileTap={{ scale: 0.97 }}
               style={{
-                height: 'clamp(52px, 8vh, 72px)',
-                width: 'auto',
-                filter: 'drop-shadow(0 6px 20px rgba(233,30,140,0.5))',
+                opacity: 0,
+                background: 'none', border: 'none', padding: 0, cursor: 'pointer',
               }}
-            />
-          </motion.button>
+              aria-label="Ver catálogo"
+            >
+              <img
+                src="/inicio/boton%20catalogo.png"
+                alt="Ver catálogo"
+                className="h-12 sm:h-14 md:h-16 lg:h-[72px] w-auto drop-shadow-[0_6px_20px_rgba(233,30,140,0.5)]"
+              />
+            </motion.button>
+          </div>
+
         </div>
 
-      </div>
+        {/* ════ PANEL DERECHO ════ */}
+        <div className="w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center relative">
+          <div className="hi-shoe-wrap relative w-full h-full flex items-center justify-center">
+            
+            {/* CAPA 0 — Efecto detrás de la zapatilla */}
+            <img
+              src="/inicio/efecto%20detras%20zapatilla.png"
+              alt=""
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] md:w-[150%] max-w-[960px] h-auto z-0 pointer-events-none select-none mt-4 md:mt-12"
+            />
 
-      {/* ════ PANEL DERECHO — zapatilla sin glow de color ════ */}
-      <div style={{
-        position: 'absolute',
-        top: 0, bottom: 64, right: 0,
-        width: '54%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <div
-          className="hi-shoe-wrap"
-          style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
-          {/* CAPA 0 — Efecto detrás de la zapatilla (no afecta al video) */}
-          {/* La zapatilla cubre la parte superior; el bloque de tallas queda visible abajo */}
-          <img
-            src="/inicio/efecto%20detras%20zapatilla.png"
-            alt=""
-            style={{
-              position: 'absolute',
-              top: '60%', left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '150%', maxWidth: 960,
-              height: 'auto',
-              zIndex: 1,                // detrás de la zapatilla
-              pointerEvents: 'none',
-              userSelect: 'none',
-            }}
-          />
+            {/* CAPA 1 — Zapatilla */}
+            <img
+              src="/Portada.png"
+              alt="Zapatilla CENIT"
+              className="hi-shoe-img relative z-10 w-[75%] sm:w-[65%] md:w-full max-w-[320px] md:max-w-[540px] lg:max-w-[640px] h-auto drop-shadow-[0_30px_60px_rgba(0,0,0,0.92)] md:mb-[8%]"
+            />
 
-          {/* CAPA 1 — Zapatilla más grande, encima del efecto pero no tapa la parte baja */}
-          <img
-            src="/Portada.png"
-            alt="Zapatilla CENIT"
-            className="hi-shoe-img"
-            style={{
-              position: 'relative', zIndex: 10,
-              width: '100%', maxWidth: 640,
-              height: 'auto',
-              marginBottom: '8%',       // sube la zapatilla para dejar el bloque del efecto visible
-              filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.92))',
-            }}
-          />
-
-          {/* Badge EDICIÓN LIMITADA */}
-          <div
-            className="hi-badge-spin"
-            style={{
-              position: 'absolute', top: '8%', right: '6%',
-              width: 'clamp(76px, 7.5vw, 108px)',
-              height: 'clamp(76px, 7.5vw, 108px)',
-              borderRadius: '50%',
-              background: '#E91E8C',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              textAlign: 'center',
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: 'clamp(0.7rem, 0.95vw, 0.9rem)',
-              lineHeight: 1.15, color: '#fff',
-              boxShadow: '0 0 24px rgba(233,30,140,0.55)',
-              zIndex: 20,
-            }}
-          >
-            EDICIÓN<br />LIMITADA
+            {/* Badge EDICIÓN LIMITADA */}
+            <div
+              className="hi-badge-spin absolute z-20 top-[5%] right-[5%] md:top-[8%] md:right-[6%] w-[76px] h-[76px] sm:w-[90px] sm:h-[90px] md:w-[108px] md:h-[108px] rounded-full bg-[#E91E8C] flex items-center justify-center text-center text-white shadow-[0_0_24px_rgba(233,30,140,0.55)]"
+              style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(0.7rem, 2.5vw, 0.9rem)', lineHeight: 1.15 }}
+            >
+              EDICIÓN<br />LIMITADA
+            </div>
           </div>
         </div>
+
       </div>
 
       {/* ── Barra inferior trust ── */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0,
-        height: 64,
-        background: 'rgba(0,0,0,0.9)',
-        borderTop: '1px solid rgba(255,255,255,0.1)',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-around',
-        padding: '0 1.5rem',
-        zIndex: 10,
-        flexWrap: 'wrap', gap: '0.5rem',
-      }}>
+      <div className="absolute bottom-0 left-0 right-0 min-h-[64px] bg-black/90 border-t border-white/10 flex items-center justify-center md:justify-around px-2 sm:px-6 z-20 flex-wrap gap-x-4 gap-y-2 py-3 md:py-0">
         {TRUST.map(({ icon, label, sub }) => (
-          <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-            <span style={{ fontSize: '1.1rem' }}>{icon}</span>
+          <div key={label} className="flex items-center gap-1.5 sm:gap-2">
+            <span className="text-base sm:text-[1.1rem]">{icon}</span>
             <div>
-              <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#fff', lineHeight: 1.2 }}>{label}</div>
-              <div style={{ fontSize: '0.58rem', color: 'rgba(255,255,255,0.42)' }}>{sub}</div>
+              <div className="text-[10px] sm:text-[0.72rem] font-bold text-white leading-[1.2]">{label}</div>
+              <div className="text-[9px] sm:text-[0.58rem] text-white/40">{sub}</div>
             </div>
           </div>
         ))}

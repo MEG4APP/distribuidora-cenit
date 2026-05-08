@@ -8,7 +8,7 @@ import { useGSAP } from '@gsap/react';
 
 gsap.registerPlugin(useGSAP);
 
-const TOTAL = 8;
+const TOTAL = 2.5;
 
 export default function LoadingScreen({ onComplete }) {
   const container  = useRef();
@@ -150,10 +150,9 @@ export default function LoadingScreen({ onComplete }) {
           <div
             className="ls-glow absolute"
             style={{
-              width: 600, height: 600,
+              width: '100%', height: '100%', maxWidth: 400, maxHeight: 400,
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(250,204,21,0.14) 0%, rgba(236,72,153,0.08) 55%, transparent 75%)',
-              filter: 'blur(56px)',
+              background: 'radial-gradient(circle, rgba(250,204,21,0.2) 0%, rgba(236,72,153,0.1) 40%, transparent 70%)',
             }}
           />
 
@@ -164,7 +163,7 @@ export default function LoadingScreen({ onComplete }) {
             style={{
               width: 'clamp(200px, 40vw, 580px)',
               height: 'auto',
-              filter: 'drop-shadow(0 0 40px rgba(250,204,21,0.45)) drop-shadow(0 0 80px rgba(236,72,153,0.2)) drop-shadow(0 20px 40px rgba(0,0,0,0.85))',
+              filter: 'drop-shadow(0 10px 20px rgba(0,0,0,0.8))',
               willChange: 'transform',
             }}
           />
@@ -235,7 +234,7 @@ export default function LoadingScreen({ onComplete }) {
         </div>
 
         <div className="flex justify-between mt-1 px-6">
-          {['0s', '2s', '4s', '6s', '8s'].map(v => (
+          {['0s', '1s', '2s', '3s'].map(v => (
             <span key={v} style={{ fontFamily: 'monospace', fontSize: '0.55rem', color: 'rgba(255,255,255,0.1)' }}>
               {v}
             </span>
