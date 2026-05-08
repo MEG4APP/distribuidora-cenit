@@ -99,8 +99,8 @@ export default function HomePage({ onNavigateToCatalog, onOpenProduct }) {
           <p className="gallery-header-item text-gray-400 text-base sm:text-lg mt-3">Deslizá para explorar · Hacé clic para ver detalles</p>
         </div>
 
-        <div className="relative z-10" style={{ height: '520px' }}>
-          <CircularGallery items={galleryItems} bend={1} textColor="#ffffff" borderRadius={0.05} scrollSpeed={2} scrollEase={0.05} />
+        <div className="relative z-10 h-[400px] md:h-[520px]">
+          <CircularGallery items={galleryItems} bend={1} textColor="#ffffff" borderRadius={0.05} scrollSpeed={2} scrollEase={0.085} />
         </div>
 
         <div className="relative z-10 pb-16 pt-6 text-center overflow-hidden">
