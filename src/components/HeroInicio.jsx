@@ -104,7 +104,7 @@ export default function HeroInicio({ onShopClick }) {
           <img
             src="/inicio/composicion%20completa.png"
             alt="Marca tu estilo — Distribuidora CENIT"
-            className="hi-composicion w-full max-w-[280px] sm:max-w-[340px] md:max-w-[480px] lg:max-w-[520px] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)]"
+            className="hi-composicion w-full max-w-[280px] sm:max-w-[340px] md:max-w-[480px] lg:max-w-[520px] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.7)] will-change-transform"
             style={{ objectPosition: 'left center' }}
           />
 
@@ -145,7 +145,7 @@ export default function HeroInicio({ onShopClick }) {
             <img
               src="/Portada.png"
               alt="Zapatilla CENIT"
-              className="hi-shoe-img relative z-10 w-[75%] sm:w-[65%] md:w-full max-w-[320px] md:max-w-[540px] lg:max-w-[640px] h-auto drop-shadow-[0_30px_60px_rgba(0,0,0,0.92)] md:mb-[8%]"
+              className="hi-shoe-img relative z-10 w-[75%] sm:w-[65%] md:w-full max-w-[320px] md:max-w-[540px] lg:max-w-[640px] h-auto drop-shadow-[0_30px_60px_rgba(0,0,0,0.92)] md:mb-[8%] will-change-transform"
             />
 
             {/* Badge EDICIÓN LIMITADA */}

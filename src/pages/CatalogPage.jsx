@@ -52,16 +52,14 @@ function ChromaWrapper({ children, radius = 280 }) {
       onPointerLeave={() => gsap.to(fadeRef.current, { opacity: 1, duration: 0.6, overwrite: true })}
     >
       {children}
-      {/* Chroma overlay */}
+      {/* Chroma overlay - OPTIMIZED FOR PERFORMANCE */}
       <div className="absolute inset-0 pointer-events-none z-[20]" style={{
-        backdropFilter: 'grayscale(0.5) brightness(0.72)',
-        WebkitBackdropFilter: 'grayscale(0.5) brightness(0.72)',
+        background: 'rgba(5,7,15,0.6)',
         maskImage: 'radial-gradient(circle var(--r) at var(--x) var(--y), transparent 0%, transparent 20%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.4) 65%, black 100%)',
         WebkitMaskImage: 'radial-gradient(circle var(--r) at var(--x) var(--y), transparent 0%, transparent 20%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.4) 65%, black 100%)',
       }} />
       <div ref={fadeRef} className="absolute inset-0 pointer-events-none z-[21]" style={{
-        backdropFilter: 'grayscale(0.5) brightness(0.72)',
-        WebkitBackdropFilter: 'grayscale(0.5) brightness(0.72)',
+        background: 'rgba(5,7,15,0.6)',
         maskImage: 'radial-gradient(circle var(--r) at var(--x) var(--y), white 0%, white 20%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.4) 65%, transparent 100%)',
         WebkitMaskImage: 'radial-gradient(circle var(--r) at var(--x) var(--y), white 0%, white 20%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.4) 65%, transparent 100%)',
         opacity: 1, transition: 'opacity 0.25s ease',
