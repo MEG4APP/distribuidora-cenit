@@ -1,130 +1,248 @@
 // ================================================================
-// LoadingScreen.jsx — Stars + Logo + Progress Bar
+// LoadingScreen.jsx — CENIT Premium Intro v8 — DEFINITIVO
+// Video puro con loop · overlay que se desvanece · barra anclada
 // ================================================================
-import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(useGSAP);
+
+const TOTAL = 8;
 
 export default function LoadingScreen({ onComplete }) {
-  const canvasRef = useRef(null);
-  const [progress, setProgress] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const container  = useRef();
+  const videoRef   = useRef();
+  const barFillRef = useRef();
+  const percentRef = useRef();
+  const dotRef     = useRef();
 
+  // Forzar play del video directamente por ref
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    resize();
-    window.addEventListener('resize', resize);
-
-    const stars = Array.from({ length: 220 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 1.6 + 0.2,
-      alpha: Math.random() * 0.7 + 0.15,
-      speed: Math.random() * 0.35 + 0.05,
-      twinkle: Math.random() * Math.PI * 2,
-      twinkleSpeed: Math.random() * 0.025 + 0.005,
-    }));
-
-    let raf;
-    const draw = () => {
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(s => {
-        s.twinkle += s.twinkleSpeed;
-        const a = s.alpha * (0.65 + 0.35 * Math.sin(s.twinkle));
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${a})`;
-        ctx.fill();
-        s.y += s.speed;
-        if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
-      });
-      raf = requestAnimationFrame(draw);
+    const vid = videoRef.current;
+    if (!vid) return;
+    vid.play().catch(() => {});
+    const onReady = () => vid.play().catch(() => {});
+    vid.addEventListener('canplay',    onReady);
+    vid.addEventListener('loadeddata', onReady);
+    return () => {
+      vid.removeEventListener('canplay',    onReady);
+      vid.removeEventListener('loadeddata', onReady);
     };
-    draw();
+  }, []);
 
-    const DURATION = 2800;
-    const start = Date.now();
-    const tick = setInterval(() => {
-      const p = Math.min(((Date.now() - start) / DURATION) * 100, 100);
-      setProgress(p);
-      if (p >= 100) {
-        clearInterval(tick);
-        setTimeout(() => { setVisible(false); setTimeout(onComplete, 650); }, 350);
-      }
-    }, 16);
+  useGSAP(() => {
 
-    return () => { cancelAnimationFrame(raf); clearInterval(tick); window.removeEventListener('resize', resize); };
-  }, [onComplete]);
+    // Líneas decorativas
+    gsap.from('.ls-line', {
+      scaleX: 0, duration: 1.0, ease: 'expo.out',
+      transformOrigin: 'center center',
+    });
+
+    // Barra aparece
+    gsap.from('.ls-bar-wrapper', {
+      scaleX: 0, autoAlpha: 0, duration: 0.9, ease: 'expo.out',
+      transformOrigin: 'center center',
+      delay: 0.4,
+    });
+
+    // Logo crece suavemente 0.92 → 1.0
+    gsap.fromTo('.ls-logo',
+      { scale: 0.92 },
+      { scale: 1, duration: TOTAL, ease: 'sine.inOut' }
+    );
+
+    // Glow del logo aparece
+    gsap.fromTo('.ls-glow',
+      { opacity: 0, scale: 0.7 },
+      { opacity: 1, scale: 1, duration: 3, ease: 'power2.out' }
+    );
+
+    // Overlay oscuro se desvanece — efecto "lights coming on"
+    // Simple y confiable: anima opacity, GPU puro, no toca el video
+    gsap.to('.ls-overlay', {
+      opacity: 0,
+      duration: TOTAL,
+      ease: 'power1.inOut',
+    });
+
+    // Barra de progreso
+    const prog = { val: 0 };
+    gsap.to(prog, {
+      val: 100,
+      duration: TOTAL,
+      delay: 0,
+      ease: 'none',
+      onUpdate() {
+        const pct = prog.val;
+        if (barFillRef.current) barFillRef.current.style.width = `${pct}%`;
+        if (percentRef.current) percentRef.current.textContent = `${Math.round(pct)}%`;
+        if (dotRef.current)     dotRef.current.style.left = `calc(${pct}% - 7px)`;
+      },
+      onComplete() {
+        const exit = gsap.timeline({ onComplete });
+        exit
+          .to('.ls-bar-wrapper', { autoAlpha: 0, y: -10, duration: 0.3, ease: 'power2.in' })
+          .to('.ls-logo, .ls-glow', { autoAlpha: 0, scale: 1.03, duration: 0.45, ease: 'power3.in' }, '<0.05')
+          .to('.ls-line', { scaleX: 0, autoAlpha: 0, duration: 0.3, ease: 'power2.in', transformOrigin: 'center center' }, '<0.05')
+          .to(container.current, { autoAlpha: 0, duration: 0.5, ease: 'power2.inOut' }, '-=0.15');
+      },
+    });
+
+  }, { scope: container });
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          className="fixed inset-0 z-[9999] flex items-center justify-center"
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.65, ease: 'easeInOut' }}
+    <div
+      ref={container}
+      className="fixed inset-0 z-[9999] overflow-hidden"
+      style={{ background: '#111' }}
+    >
+
+      {/* ── VIDEO DE FONDO ── */}
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+      >
+        <source src="/fondo-loading.mp4" type="video/mp4" />
+      </video>
+
+      {/* Overlay oscuro único — arranca opaco y se desvanece en 8s */}
+      {/* Efecto: video pasa de oscuro a su brillo real */}
+      <div
+        className="ls-overlay absolute inset-0 pointer-events-none"
+        style={{ background: 'rgba(0,0,0,0.72)', opacity: 1 }}
+      />
+
+      {/* Degradado fijo top/bottom para legibilidad (no se anima) */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0.6) 100%)',
+        }}
+      />
+
+      {/* ── Línea decorativa TOP ── */}
+      <div className="absolute top-0 left-0 w-full pointer-events-none">
+        <div
+          className="ls-line w-full"
+          style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(250,204,21,0.8) 50%, transparent)' }}
+        />
+      </div>
+
+      {/* ── Línea decorativa sobre la barra ── */}
+      <div className="absolute left-0 w-full pointer-events-none" style={{ bottom: 78 }}>
+        <div
+          className="ls-line w-full"
+          style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(236,72,153,0.7) 50%, transparent)' }}
+        />
+      </div>
+
+      {/* ── LOGO — centrado absolutamente ── */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="relative flex items-center justify-center">
+
+          <div
+            className="ls-glow absolute"
+            style={{
+              width: 600, height: 600,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(250,204,21,0.14) 0%, rgba(236,72,153,0.08) 55%, transparent 75%)',
+              filter: 'blur(56px)',
+            }}
+          />
+
+          <img
+            src="/inicio/CENIT%20PNG.png"
+            alt="Distribuidora CENIT"
+            className="ls-logo relative z-10 h-16 sm:h-20 w-auto object-contain"
+            style={{
+              width: 'clamp(200px, 40vw, 580px)',
+              height: 'auto',
+              filter: 'drop-shadow(0 0 40px rgba(250,204,21,0.45)) drop-shadow(0 0 80px rgba(236,72,153,0.2)) drop-shadow(0 20px 40px rgba(0,0,0,0.85))',
+              willChange: 'transform',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* ── BARRA DE CARGA — anclada al fondo ── */}
+      <div
+        className="ls-bar-wrapper absolute left-0 w-full"
+        style={{ bottom: 28 }}
+      >
+        <div className="flex justify-between items-center mb-2 px-6">
+          <span style={{
+            fontFamily: "'Bebas Neue', sans-serif",
+            fontSize: '0.7rem',
+            letterSpacing: '0.35em',
+            color: 'rgba(255,255,255,0.3)',
+          }}>
+            Cargando
+          </span>
+          <span
+            ref={percentRef}
+            style={{
+              fontFamily: 'monospace',
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              color: 'rgba(250,204,21,0.9)',
+              minWidth: '4ch',
+              textAlign: 'right',
+            }}
+          >
+            0%
+          </span>
+        </div>
+
+        {/* Track extremo a extremo */}
+        <div
+          className="relative w-full"
+          style={{
+            height: 5,
+            background: 'rgba(255,255,255,0.06)',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+            overflow: 'visible',
+          }}
         >
-          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-          <div className="relative z-10 flex flex-col items-center">
-            {/* Logo */}
-            <motion.div
-              initial={{ scale: 0.4, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 180, damping: 18, delay: 0.25 }}
-              className="mb-6"
-            >
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gradient-to-br from-cyan-500/30 to-pink-500/30 rounded-3xl blur-2xl" />
-                <img src="/logo-cenit.jpg" alt="Distribuidora CENIT"
-                  className="relative w-28 h-auto rounded-2xl shadow-2xl ring-1 ring-white/10" />
-              </div>
-            </motion.div>
+          <div
+            ref={barFillRef}
+            style={{
+              position: 'absolute', left: 0, top: 0,
+              width: '0%', height: '100%',
+              background: 'linear-gradient(90deg, rgba(236,72,153,0.75) 0%, rgba(250,204,21,0.9) 55%, rgba(103,232,249,0.75) 100%)',
+              boxShadow: '0 0 12px rgba(250,204,21,0.7), 0 0 24px rgba(236,72,153,0.4)',
+            }}
+          />
+          <div
+            ref={dotRef}
+            style={{
+              position: 'absolute',
+              top: '50%', left: '-7px',
+              transform: 'translateY(-50%)',
+              width: 14, height: 14,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, white 25%, rgba(250,204,21,0.5) 100%)',
+              boxShadow: '0 0 10px white, 0 0 24px #facc15',
+              pointerEvents: 'none',
+            }}
+          />
+        </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.55 }}
-              className="text-white font-black text-xl tracking-[0.3em] uppercase mb-1"
-            >
-              Distribuidora CENIT
-            </motion.h1>
+        <div className="flex justify-between mt-1 px-6">
+          {['0s', '2s', '4s', '6s', '8s'].map(v => (
+            <span key={v} style={{ fontFamily: 'monospace', fontSize: '0.55rem', color: 'rgba(255,255,255,0.1)' }}>
+              {v}
+            </span>
+          ))}
+        </div>
+      </div>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.75 }}
-              className="text-gray-500 text-xs tracking-widest uppercase mb-8"
-            >
-              Catálogo 2026
-            </motion.p>
-
-            {/* Progress bar */}
-            <motion.div
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 240 }}
-              transition={{ delay: 0.5, duration: 0.4 }}
-              className="overflow-hidden"
-            >
-              <div className="w-60 h-px bg-white/10 rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-75"
-                  style={{
-                    width: `${progress}%`,
-                    background: 'linear-gradient(90deg, #06b6d4, #ec4899)',
-                    boxShadow: '0 0 10px rgba(6,182,212,0.7)',
-                  }}
-                />
-              </div>
-              <p className="text-center text-gray-600 text-xs mt-2 font-mono">
-                {Math.round(progress)}%
-              </p>
-            </motion.div>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    </div>
   );
 }

@@ -28,13 +28,11 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Show loading screen first
-  if (loading) {
-    return <LoadingScreen onComplete={() => setLoading(false)} />;
-  }
+  // El LoadingScreen ahora se renderiza por encima de la app para que la app cargue en segundo plano
 
   return (
-    <div className="min-h-screen bg-black">
+    <>
+      <div className="min-h-screen bg-black">
       <Header currentPage={currentPage} onNavigate={navigate} />
 
       <AnimatePresence mode="wait">
@@ -53,7 +51,11 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <WhatsAppButton variant="float" />
-    </div>
+        <WhatsAppButton variant="float" />
+      </div>
+
+      {/* Loading Screen superpuesto */}
+      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+    </>
   );
 }

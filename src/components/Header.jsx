@@ -23,14 +23,14 @@ export default function Header({ currentPage, onNavigate }) {
   return (
     <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-white/10 shadow-lg shadow-black/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
 
           {/* ── Logo ── */}
           <button onClick={() => handleNav('home')} className="flex items-center gap-2 group" aria-label="Inicio">
             <img
-              src="/logo-cenit.jpg"
+              src="/inicio/CENIT PNG.png"
               alt="Distribuidora CENIT"
-              className="h-10 w-auto object-contain rounded-lg shadow-sm group-hover:opacity-85 transition-opacity duration-200"
+              className="h-14 w-auto object-contain group-hover:opacity-85 transition-opacity duration-200"
             />
           </button>
 
@@ -40,7 +40,7 @@ export default function Header({ currentPage, onNavigate }) {
               <button
                 key={link.page}
                 onClick={() => handleNav(link.page)}
-                className={`relative px-4 py-2 rounded-lg text-sm font-bold tracking-wide transition-colors duration-200 ${
+                className={`relative px-5 py-2.5 rounded-lg text-base font-bold tracking-wide transition-colors duration-200 ${
                   currentPage === link.page
                     ? 'text-yellow-400'
                     : 'text-gray-400 hover:text-white'
@@ -62,7 +62,7 @@ export default function Header({ currentPage, onNavigate }) {
             <a
               href="https://wa.me/59178930774?text=Hola%2C%20quiero%20consultar%20el%20cat%C3%A1logo."
               target="_blank" rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 border border-green-500 text-green-400 hover:bg-green-500 hover:text-black px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all duration-200"
+              className="hidden sm:inline-flex items-center gap-2 border border-green-500 text-green-400 hover:bg-green-500 hover:text-black px-5 py-2.5 rounded-lg text-sm font-black uppercase tracking-wider transition-all duration-200"
             >
               WhatsApp
             </a>

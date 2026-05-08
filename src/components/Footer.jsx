@@ -8,7 +8,7 @@ export default function Footer({ onNavigate }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
           <div>
-            <img src="/logo-cenit.jpg" alt="Distribuidora CENIT" className="h-12 w-auto rounded-lg mb-3 opacity-90" />
+            <img src="/inicio/CENIT%20PNG.png" alt="Distribuidora CENIT" className="h-12 w-auto rounded-lg mb-3 opacity-90 object-contain" />
             <p className="text-gray-600 text-sm leading-relaxed">Encuentra tu modelo ideal: tallas, colores y diseños en un solo catálogo.</p>
           </div>
           <div>
