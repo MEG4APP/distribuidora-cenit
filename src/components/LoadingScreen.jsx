@@ -97,7 +97,7 @@ export default function LoadingScreen({ onComplete }) {
         preload="auto"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       >
-        <source src="/fondo-loading.mp4" type="video/mp4" />
+        <source src="/fondo-loading.mp4?v=2" type="video/mp4" />
       </video>
 
       {/* Overlay oscuro único — arranca opaco y se desvanece en 2.5s */}

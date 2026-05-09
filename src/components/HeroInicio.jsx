@@ -89,7 +89,7 @@ export default function HeroInicio({ onShopClick }) {
         autoPlay muted loop playsInline preload="auto"
         className="absolute inset-0 w-full h-full object-cover opacity-100 pointer-events-none"
       >
-        <source src="/Fondo%20INICIO.mp4" type="video/mp4" />
+        <source src="/Fondo%20INICIO.mp4?v=2" type="video/mp4" />
       </video>
 
       {/* Overlay oscuro: Gradiente en desktop, más opaco en mobile */}
